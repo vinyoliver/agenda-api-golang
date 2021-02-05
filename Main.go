@@ -1,13 +1,16 @@
 package main
 
 import (
-	"agenda-api/database"
-	"agenda-api/routes"
+	"agenda-api/agenda"
+	"log"
+	"net/http"
 
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 func main() {
-	database.Connect()
-	routes.HandleRequest()
+	svc := agenda.NewService()
+	router := agenda.NewRouter(svc)
+	log.Println("Listening on port 8000")
+	log.Fatal(http.ListenAndServe(":8000", router))
 }
